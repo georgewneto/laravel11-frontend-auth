@@ -10,7 +10,7 @@ class AuthService
 
     public function __construct()
     {
-        $this->client = new Client(['base_uri' => 'http://localhost:8081']);
+        $this->client = new Client(['base_uri' => env('SERVICE_AUTH')]);
     }
 
     public function login($credentials)
