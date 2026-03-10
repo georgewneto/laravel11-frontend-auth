@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Services\TokenService;
 
 class AuthController extends Controller
 {
@@ -22,7 +23,6 @@ class AuthController extends Controller
             $response = $this->authService->login($credentials);
         } catch (\Exception $e) {
             $erro = $e->getMessage();
-            print($erro);
             if (strpos($erro, 'Credenciais inv\u00e1lidas') !== false)
             {
                 return back()->withErrors(['message' => $response['message'] ?? 'E-mail ou senha incorretos!']);
@@ -30,6 +30,9 @@ class AuthController extends Controller
         }
 
         if (isset($response['token'])) {
+            $tokenService = new TokenService();
+            $token = $response['token'];
+            $tokenService->getRolesAndPermissions($token, 'dashboard');
             return redirect()->route('dashboard');
         }
 

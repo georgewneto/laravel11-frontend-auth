@@ -18,71 +18,68 @@ class ProfileController extends Controller
         $this->authService = $authService;
     }
 
-    private function timestampParaDataHora($timestamp, $formato = 'd/m/Y H:i:s') {
-        // Cria um objeto DateTime a partir do timestamp (em segundos)
-        $data = new DateTime();
-        $data->setTimestamp($timestamp);
-
-        // Formata a data e hora de acordo com o formato especificado
-        return $data->format($formato);
-    }
-
     public function index(Request $request)
     {
         $tokenService = new TokenService();
         $token = Session::get('token');
-
-        $userName = null;
-        $userId = 0;
-        $userPermissions = null;
-        $userRoles = null;
-        $exp = 0;
-        if ($token) {
-            $decoded = $tokenService->decodeToken($token);
-            if ($decoded) {
-                // Acessar dados do token
-                $userId = $decoded->sub ?? null;
-                $userName = $decoded->name ?? null;
-                $userRoles = $decoded->roles ?? null;
-                $userPermissions = $decoded->permissions ?? null;
-            }
-            $servico = 'produtos';
-            $autorizado = false;
-            foreach ($userRoles as $role) {
-                if ($role == 'admin' || in_array($servico, $userRoles)) {
-                    $autorizado = true;
-                    break;
-                }
-            }
-            foreach ($userPermissions as $permission) {
-                if ($permission == 'admin' || in_array($servico, $userPermissions)) {
-                    $autorizado = true;
-                    break;
-                }
-            }
-        }
-        if (!$autorizado) {
-            return redirect()->route('dashboard');
-        }
+        $tokenService->getRolesAndPermissions($token, 'profile');
         $email = null;
+        $telefone = null;
+        $cpf = null;
 
         $response = null;
         try {
             $response = $this->authService->me();
             $email = $response['email'];
+            $telefone = $response['telefone'];
+            $cpf = $response['cpf'];
+            $id = $response['id'];
         } catch (\Exception $e) {
             $erro = $e->getMessage();
-            return view('profile')->withErrors(['message' => $erro])
-                ->with('userId', $userId)
-                ->with('userName', $userName)
-                ->with('userEmail', $email);
+            return view('profile')
+                ->with('error', $erro)
+                ->with('email', $email)
+                ->with('telefone', $telefone)
+                ->with('cpf', $cpf)
+                ->with('id', $id);
+
         }
 
         return view('profile')
-            ->with('userId', $userId)
-            ->with('userName', $userName)
-            ->with('userEmail', $email);
+            ->with('email', $email)
+            ->with('telefone', $telefone)
+            ->with('cpf', $cpf)
+            ->with('id', $id);
+    }
 
+    public function update(Request $request)
+    {
+        $tokenService = new TokenService();
+        $token = Session::get('token');
+        $tokenService->getRolesAndPermissions($token, 'profile');
+
+        $request->validate([
+            'email' => 'required|email',
+            'telefone' => 'required|string',
+            'cpf' => 'required|string',
+        ]);
+
+        $cpf = $request->input('cpf');
+        $cpf = preg_replace('/\D/', '', $cpf); // Remove non-numeric characters
+        $telefone = $request->input('telefone');
+        $telefone = preg_replace('/\D/', '', $telefone); // Remove non-numeric characters
+        $request->merge([
+            'cpf' => $cpf,
+            'telefone' => $telefone,
+        ]);
+
+        $data = $request->all();
+        try {
+            $response = $this->authService->updateProfile($data);
+            return redirect()->route('profile')->with('success', 'Dados atualizados com sucesso.');
+        } catch (\Exception $e) {
+            return redirect()->route('profile')->with('error', 'Falha ao tentar atualizar o perfil do usuário: ' . $e->getMessage());
+        }
     }
 
 }

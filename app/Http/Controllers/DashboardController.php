@@ -7,17 +7,17 @@ use Illuminate\Http\Request;
 use App\Services\TokenService;
 use Illuminate\Support\Facades\Session;
 
-class ProdutosController extends Controller
+class DashboardController extends Controller
 {
     public function __construct()
     {
         $tokenService = new TokenService();
         $token = Session::get('token');
-        $tokenService->getRolesAndPermissions($token, 'produtos');
+        $tokenService->getRolesAndPermissions($token, 'dashboard');
     }
 
     public function index(Request $request)
     {
-        return view('produtos');
+        return view('dashboard');
     }
 }

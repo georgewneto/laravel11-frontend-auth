@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>API Laravel</title>
     <meta name="description" content="Painel Administrativo">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/styles.min.css">
+    <link rel="stylesheet" href="{{url('assets/bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url('assets/fonts/fontawesome-all.min.css')}}">
+    <link rel="stylesheet" href="{{url('assets/css/styles.min.css')}}">
 </head>
 <body id="page-top">
 <div id="wrapper">
@@ -34,18 +34,44 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                <?php
+                $permissoes = Session::get('user')['roles'][0]->permissions;
+                $permissoes = collect($permissoes)->toArray();
+                ?>
+
+                @if (in_array('Usuários', $permissoes))
                 <li class="nav-item">
-                    <a class="nav-link <?=isActive('/profile')?>" href="{{url('/profile')}}">
-                        <i class="fas fa-user"></i>
-                        <span>Perfil</span>
+                    <a class="nav-link <?=isActive('/usuarios')?>" href="{{url('/usuarios')}}">
+                        <i class="fas fa-users"></i>
+                        <span>Usuários</span>
                     </a>
                 </li>
+                @endif
+
+                @if (in_array('Permissões', $permissoes))
+                <li class="nav-item">
+                    <a class="nav-link <?=isActive('/permissoes')?>" href="{{url('/permissoes')}}">
+                        <i class="fas fa-paperclip"></i>
+                        <span>Permissões</span>
+                    </a>
+                </li>
+                @endif
+                @if (in_array('Funções', $permissoes))
+                <li class="nav-item">
+                    <a class="nav-link <?=isActive('/funcoes')?>" href="{{url('/funcoes')}}">
+                        <i class="fas fa-tasks"></i>
+                        <span>Funções</span>
+                    </a>
+                </li>
+                @endif
+                @if (in_array('Produtos', $permissoes))
                 <li class="nav-item">
                     <a class="nav-link <?=isActive('/produtos')?>" href="{{url('/produtos')}}">
                         <i class="fas fa-table"></i>
                         <span>Produtos</span>
                     </a>
                 </li>
+                @endif
                 <!--li class="nav-item">
                     <a class="nav-link" href="login.html">
                         <i class="far fa-user-circle"></i>
@@ -224,8 +250,8 @@
                         <li class="nav-item dropdown no-arrow">
                             <div class="nav-item dropdown no-arrow">
                                 <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-                                    <span class="d-none d-lg-inline me-2 text-gray-600 small"><?=$userName?></span>
-                                    <img class="border rounded-circle img-profile" src="assets/img/dogs/image2.jpeg">
+                                    <span class="d-none d-lg-inline me-2 text-gray-600 small"><?php $user = session('user');echo $user['name']?></span>
+                                    <img class="border rounded-circle img-profile" src="{{url('assets/img/dogs/image2.jpeg')}}">
                                 </a>
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
                                     <a class="dropdown-item" href="{{url('/profile')}}">
@@ -247,7 +273,6 @@
             </nav>
             <div class="container-fluid">
                 @yield('conteudo')
-
             </div>
         </div>
         <footer class="bg-white sticky-footer">
@@ -262,7 +287,7 @@
         <i class="fas fa-angle-up"></i>
     </a>
 </div>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/script.min.js"></script>
+<script src="{{url('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+<script src="{{url('assets/js/script.min.js')}}"></script>
 </body>
 </html>
