@@ -10,7 +10,10 @@ class AuthService
 
     public function __construct()
     {
-        $this->client = new Client(['base_uri' => env('SERVICE_AUTH')]);
+        $this->client = new Client([
+            'base_uri' => env('SERVICE_AUTH'),
+            'verify' => env('APP_ENV') === 'production', // Desabilita verificação SSL em desenvolvimento
+        ]);
     }
 
     public function login($credentials)
