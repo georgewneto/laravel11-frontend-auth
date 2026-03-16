@@ -251,7 +251,7 @@
                             <div class="nav-item dropdown no-arrow">
                                 <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
                                     <span class="d-none d-lg-inline me-2 text-gray-600 small"><?php $user = session('user');echo $user['name']?></span>
-                                    <img class="border rounded-circle img-profile" src="{{url('assets/img/dogs/image2.jpeg')}}">
+                                    <img class="border rounded-circle img-profile" src="{{url('assets/img/people/image2.png')}}">
                                 </a>
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
                                     <a class="dropdown-item" href="{{url('/profile')}}">
