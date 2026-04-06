@@ -47,9 +47,9 @@ pipeline {
                 sh "docker cp /home/georgewneto/Projetos/autenticacao/storage/jwt/jwt-public.key ${APP_NAME}:/var/www/storage/jwt/"
 
                 // Define permissões corretas nos arquivos JWT
-                sh "docker exec ${APP_NAME} chmod 644 /var/www/storage/jwt/jwt-private.key"
-                sh "docker exec ${APP_NAME} chmod 644 /var/www/storage/jwt/jwt-public.key"
-                sh "docker exec ${APP_NAME} chown -R www-data:www-data /var/www/storage/jwt"
+                //sh "docker exec ${APP_NAME} chmod 644 /var/www/storage/jwt/jwt-private.key"
+                //sh "docker exec ${APP_NAME} chmod 644 /var/www/storage/jwt/jwt-public.key"
+                //sh "docker exec ${APP_NAME} chown -R www-data:www-data /var/www/storage/jwt"
 
                 // Cria a pasta de logs e o arquivo laravel.log
                 sh "docker exec ${APP_NAME} mkdir -p /var/www/storage/logs"
