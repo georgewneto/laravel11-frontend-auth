@@ -54,18 +54,18 @@ pipeline {
                 // Cria a pasta de logs e o arquivo laravel.log
                 sh "docker exec ${APP_NAME} mkdir -p /var/www/storage/logs"
                 sh "docker exec ${APP_NAME} touch /var/www/storage/logs/laravel.log"
-                sh "docker exec ${APP_NAME} chmod 666 /var/www/storage/logs/laravel.log"
+                //sh "docker exec ${APP_NAME} chmod 666 /var/www/storage/logs/laravel.log"
                 sh "docker exec ${APP_NAME} chown -R www-data:www-data /var/www/storage/logs"
 
 
                 // Cria a pasta de cache e o arquivo cache.sqlite
                 sh "docker exec ${APP_NAME} mkdir -p /var/www/storage/framework/cache"
                 sh "docker exec ${APP_NAME} touch /var/www/storage/framework/cache/cache.sqlite"
-                sh "docker exec ${APP_NAME} chmod 666 /var/www/storage/framework/cache/cache.sqlite"
+                //sh "docker exec ${APP_NAME} chmod 666 /var/www/storage/framework/cache/cache.sqlite"
                 sh "docker exec ${APP_NAME} chown -R www-data:www-data /var/www/storage/framework/cache"
                 sh "docker exec ${APP_NAME} mkdir -p /var/www/database"
                 sh "docker exec ${APP_NAME} touch /var/www/database/database.sqlite"
-                sh "docker exec ${APP_NAME} chmod 664 /var/www/database/database.sqlite"
+                //sh "docker exec ${APP_NAME} chmod 664 /var/www/database/database.sqlite"
 
 
                 // Roda as migrações dentro do novo container
