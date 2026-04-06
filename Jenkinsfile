@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME = "laravel11-autenticacao"
-        IMAGE_NAME = "georgewneto/laravel11-autenticacao:latest"
+        APP_NAME = "laravel11-frontend-auth"
+        IMAGE_NAME = "georgewneto/laravel11-frontend-auth:latest"
     }
 
     stages {
@@ -43,8 +43,8 @@ pipeline {
                 sh "docker exec ${APP_NAME} mkdir -p /var/www/storage/jwt"
 
                 // Copia as chaves JWT para o container
-                sh "docker cp /home/georgewneto/Projetos/autenticacao/storage/jwt/jwt-private.key ${APP_NAME}:/var/www/storage/jwt/"
-                sh "docker cp /home/georgewneto/Projetos/autenticacao/storage/jwt/jwt-public.key ${APP_NAME}:/var/www/storage/jwt/"
+                sh "docker cp /home/georgewneto/Projetos/frontend-auth/storage/jwt/jwt-private.key ${APP_NAME}:/var/www/storage/jwt/"
+                sh "docker cp /home/georgewneto/Projetos/frontend-auth/storage/jwt/jwt-public.key ${APP_NAME}:/var/www/storage/jwt/"
 
                 // Define permissões corretas nos arquivos JWT
                 sh "docker exec ${APP_NAME} chmod 644 /var/www/storage/jwt/jwt-private.key"
