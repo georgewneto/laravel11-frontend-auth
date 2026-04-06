@@ -40,6 +40,9 @@ RUN groupadd -g 1000 www && useradd -u 1000 -ms /bin/bash -g www www
 # Copy application files and set permissions
 COPY --chown=www:www . /var/www
 
+# Install PHP dependencies into /var/www/vendor during image build
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
 RUN chown -R www:www /var/www/storage/app/public
 RUN chmod -R 777 /var/www/storage/app/public
 

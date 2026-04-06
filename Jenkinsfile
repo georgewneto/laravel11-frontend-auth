@@ -57,9 +57,6 @@ pipeline {
                 sh "docker exec ${APP_NAME} chmod 666 /var/www/storage/logs/laravel.log"
                 sh "docker exec ${APP_NAME} chown -R www-data:www-data /var/www/storage/logs"
 
-                // Instala as dependências do Laravel
-                sh "docker exec ${APP_NAME} composer install --no-interaction"
-
                 // Roda as migrações dentro do novo container
                 //sh "docker exec ${APP_NAME} php artisan migrate --force"
                 sh "docker exec ${APP_NAME} php artisan config:cache"
