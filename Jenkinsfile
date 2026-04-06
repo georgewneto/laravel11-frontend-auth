@@ -58,7 +58,7 @@ pipeline {
                 sh "docker exec ${APP_NAME} chown -R www-data:www-data /var/www/storage/logs"
 
                 // Roda as migrações dentro do novo container
-                //sh "docker exec ${APP_NAME} php artisan migrate --force"
+                sh "docker exec ${APP_NAME} php artisan migrate --force"
                 sh "docker exec ${APP_NAME} php artisan config:cache"
             }
         }
