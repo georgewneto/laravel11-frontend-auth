@@ -57,6 +57,17 @@ pipeline {
                 sh "docker exec ${APP_NAME} chmod 666 /var/www/storage/logs/laravel.log"
                 sh "docker exec ${APP_NAME} chown -R www-data:www-data /var/www/storage/logs"
 
+                // Garante o arquivo SQLite quando DB_CONNECTION=sqlite
+                sh '''
+                    docker exec ${APP_NAME} sh -c '
+                        if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
+                            mkdir -p /var/www/database
+                            touch /var/www/database/database.sqlite
+                            chmod 664 /var/www/database/database.sqlite
+                        fi
+                    '
+                '''
+
                 // Roda as migrações dentro do novo container
                 sh "docker exec ${APP_NAME} php artisan migrate --force"
                 sh "docker exec ${APP_NAME} php artisan config:cache"
